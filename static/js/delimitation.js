@@ -183,24 +183,29 @@ function saveZone(){
         location: coordinatesConverted
     };
     console.log(zone);
-    fetch("https://smartsecurity-webservice.herokuapp.com/api/zone", {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Methods':'POST, OPTIONS'
-        },
-        body : JSON.stringify(zone)
-    })
-    .then((respuesta) => {
-        if(respuesta.status != 201){
-            alert("An error has ocurred to save the subzone entity");
-            clearInputsZone();
-        }
-        else{
-            console.log(respuesta);
-            alert("Zone save successfully");
-            clearInputsZone();
-        }
-    })
+    if(zone.name!== "" && zone.address!=="" && zone.centerPoint.length!==0 && zone.location.length!==0){
+        fetch("https://smartsecurity-webservice.herokuapp.com/api/zone", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Methods':'POST, OPTIONS'
+            },
+            body : JSON.stringify(zone)
+        })
+        .then((respuesta) => {
+            if(respuesta.status != 201){
+                alert("An error has ocurred to save the subzone entity");
+                clearInputsZone();
+            }
+            else{
+                console.log(respuesta);
+                alert("Zone save successfully");
+                clearInputsZone();
+            }
+        })    
+    }
+    else{
+        alert("It is necessary to fill all the fields!.");
+    }
     return;
 }

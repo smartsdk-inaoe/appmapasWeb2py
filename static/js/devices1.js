@@ -4,9 +4,7 @@ $('.datepicker').datepicker({
 });
 
 //Variables
-var date,dateTime, dateUTC, timeHour = "";
-var hour = "";
-var phonenumber = null;
+var date,dateTime, dateUTC, timeHour, tempDate, hour, phoneNumber = "";
 var zoneLocation,dateTimeSplit = [];
 var isOnCampus = false;
 var marker;
@@ -114,29 +112,36 @@ function searching1(){
     //CONCATENATE DATE AND TIME
     dateTime = date+"T"+hour+":00";
     console.log(dateTime);
-    
-    dateUTC = new Date(dateTime).toISOString();
-    //dateUTC  = moment.utc(dateTime).format()
-    //DATE UTC
-    console.log(dateUTC);
-    //ARRAY DATETIME
-    dateTimeSplit = dateUTC.split("T");
-    console.log(dateTimeSplit);
 
-    timeHour = dateTimeSplit[1].substring(0,2);
-    console.log(timeHour);
+    if(date && hour){
+        dateUTC = new Date(dateTime).toISOString();
+        //DATE UTC
+        console.log(dateUTC);
+        //ARRAY DATETIME
+        dateTimeSplit = dateUTC.split("T");
+        console.log(dateTimeSplit);
 
+        timeHour = dateTimeSplit[1].substring(0,2);
+        console.log(timeHour);
+    }
+ 
     //PHONE NUMBER FORM INPUT
     phonenumber = $('#phonenumber-countrycode').val()+$('#phonenumber-input').val();
     console.log(phonenumber);
-    searchUserInfo(phonenumber);
+    
+    if(tempDate!=="" && !$('#zonelist1').val() && !$('#phonenumber-input').val() && hour!=null){
+        searchUserInfo(phonenumber);          
+    }
+    else{
+        alert("It is necessary to fill all the fields in order to execute the query!.")
+    }
     return;
 }
 function searchUser(userData){
     $.get("https://smartsecurity-webservice.herokuapp.com/crate/locationOwnerDateTime?owner="+userData[0]['id']+"&date="+dateTimeSplit[0]+"&time="+timeHour, function(data){
         if(data.length===0){
-            console.log("No se encontraron registros con el Usuario: "+userData[0]['firstName']+" en la fecha y hora especificados: "+date+" "+hour+" hours");
-            alert("No se encontraron registros con el Usuario: "+userData[0]['firstName']+" en la fecha y hora especificados: "+date+" "+hour+" hours");
+            console.log("No User records found: "+userData[0]['firstName']+" at the specified date and time: "+date+" "+hour+" hours");
+            alert("No User records found: "+userData[0]['firstName']+" at the specified date and time: "+date+" "+hour+" hours");
         }
         else{
             console.log(data);
@@ -148,8 +153,8 @@ function searchUser(userData){
                    showMap(data[0]['location'], data);
                 }
                 else{
-                    alert("El usuario: "+userData[0]['firstName']+" no se encontró en la zona  en la fecha y hora especificada: "+date+" "+hour+" hours");
-                    console.log("El usuario: "+userData[0]['firstName']+" no se encontró en la zona en la fecha y hora especificada: " +date+" "+hour+" hours");
+                    alert("The User: "+userData[0]['firstName']+" was not found in the area at the specified date and time: "+date+" "+hour+" hours");
+                    console.log("The User: "+userData[0]['firstName']+" was not found in the area at the specified date and time: " +date+" "+hour+" hours");
                 }    
             })
         }
@@ -241,4 +246,5 @@ function showMap(location, data){
     .catch((error)=>{
         console.log(error);
     })
+    return;
 }

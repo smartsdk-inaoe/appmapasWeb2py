@@ -14,9 +14,9 @@
 {{block page_js}}
 <script src="{{=URL('static','js/moment.js')}}"></script>
 <script src="{{=URL('static','js/moment-timezone.js')}}"></script>
-<script src="{{=URL('static','js/devices11.js')}}"></script>
-<script src="{{=URL('static','js/devices22.js')}}"></script>
-<script src="{{=URL('static','js/devices33.js')}}"></script>
+<script src="{{=URL('static','js/devices1.js')}}"></script>
+<script src="{{=URL('static','js/devices2.js')}}"></script>
+<script src="{{=URL('static','js/devices3.js')}}"></script>
 {{end}}
 
 {{block header}}
@@ -88,7 +88,7 @@
             <div class="form-group row">
               <div class="col-5">
                 <select class="form-control" id="timeInput">
-                  <option selected>Choose...</option>
+                  <option value="" selected disabled> Choose...</option>
                   <option value="01">01</option>
                   <option value="02">02</option>
                   <option value="03">03</option>
@@ -136,7 +136,7 @@
             <div class="form-group">
               <label for="zonelist2"> <i class="far fa-map"></i>  Select the zone: </label>
               <select class="form-control" id="zonelist2" name="zonelist2">
-                <option> Select an option </option>
+                <option value="" selected disabled> Select an option </option>
               </select>
             </div>
             <div class="form-group">
@@ -146,10 +146,10 @@
                   <span class=""><i class="fas fa-plus fa-2x"></i></span>
                 </div>
                 <div class="col-4">
-                  <input type="text" name="input-search1" id="phonenumber-countrycode" class="form-control"  required value="52" disabled>
+                  <input type="text" id="phonenumber-countrycode" class="form-control"  required value="52" disabled>
                 </div>
                 <div class="col-7">
-                  <input type="text" name="input-search2" id="input-search2" class="form-control">
+                  <input type="text" name="input-search2" id="input-search2" class="form-control" required>
                 </div>
               </div>
             </div>
@@ -168,7 +168,7 @@
               <br>
               <label for="zonelist3"><i class="far fa-map"></i>   Select the zone: </label>
               <select class="form-control" id="zonelist3" name="zonelist3">
-                <option> Select an option </option>
+                <option value="" selected disabled> Select an option </option>
               </select>
             </div>
             <br>

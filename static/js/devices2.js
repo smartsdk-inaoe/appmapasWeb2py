@@ -46,25 +46,31 @@ function searching2(){
     let phone = $('#phonenumber-countrycode').val()+$('#input-search2').val();
     console.log($("#zonelist2").val());
     console.log(phone);
-    fetch("https://smartsecurity-webservice.herokuapp.com/service/devices/zone/"+$("#zonelist2").val()+"/owner?phoneNumber="+phone, {
-        method: 'GET',
-        headers: {
-            'Access-Control-Allow-Methods':'GET, POST, OPTIONS, PUT, PATCH, DELETE'
-        },
-    })
-    .then((res) => res.json())
-    .then((data)=> {
-        if(data.length === 0){
-            alert("This device has not been found in the zone");
-        }  
-        else{
-            console.dir(data) 
-            showDeviceOnMap(data);
-        }
-    })
-    .catch((error)=>{
-        console.log(error);
-    })
+    if(!$('#input-search2').val() && !$("#zonelist2").val()){
+        fetch("https://smartsecurity-webservice.herokuapp.com/service/devices/zone/"+$("#zonelist2").val()+"/owner?phoneNumber="+phone, {
+            method: 'GET',
+            headers: {
+                'Access-Control-Allow-Methods':'GET, POST, OPTIONS, PUT, PATCH, DELETE'
+            },
+        })
+        .then((res) => res.json())
+        .then((data)=> {
+            if(data.length === 0){
+                alert("The device with phone number: "+$('#input-search2').val()+" has not been found in the zone specified");
+            }  
+            else{
+                console.dir(data) 
+                showDeviceOnMap(data);
+            }
+        })
+        .catch((error)=>{
+            console.log(error);
+        })
+    }
+    else{
+        alert("It is necessary to specify the zone, and type the phone number of the user!.");
+    }   
+    return;
 }
 
 

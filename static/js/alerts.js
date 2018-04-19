@@ -84,49 +84,55 @@ function queryAlerts(){
     }
 }
 function getAlerts(alertsVisualization, category, value){
-    markerLayer.clearLayers();
-    map.removeLayer(markerLayer)
-    fetch("https://smartsecurity-webservice.herokuapp.com/service/alerts/"+category+"/"+alertsVisualization+"/"+value, {
-        method: 'GET',
-        headers: {
-            'Access-Control-Allow-Methods':'GET, OPTIONS'
-        },
-    })
-    .then((res) => res.json())
-    .then((data)=> {
-        var colorAlert;
-        console.log(data);
-        if(!$.isEmptyObject(data)){
-            data.forEach((element, index)=>{
-                let tempLocation = JSON.parse("["+element['location']+"]")
-                console.log(tempLocation);
-                if(element['severity']==="informational"){
-                    colorAlert = '#A69E9A'
-                }
-                else if(element['severity']==="low"){
-                    colorAlert = '#4A9EDD'
-                }
-                else if(element['severity']==="medium"){
-                    colorAlert = '#fa0'
-                }
-                else if(element['severity']==="high"){
-                    colorAlert = '#FA6819'
-                }
-                else if(element['severity']==="critical"){
-                    colorAlert = '#D50615'
-                }
-                marker = L.marker(JSON.parse("["+element['location']+"]"), {
-                    icon: L.mapbox.marker.icon({
-                        'marker-size': 'large',
-                        'marker-symbol': 'car',
-                        'marker-color': colorAlert
+    if($('#option-search-1').val()!=="" && $('#alerts-visualization').val()!==""){
+        markerLayer.clearLayers();
+        map.removeLayer(markerLayer)
+        fetch("https://smartsecurity-webservice.herokuapp.com/service/alerts/"+category+"/"+alertsVisualization+"/"+value, {
+            method: 'GET',
+            headers: {
+                'Access-Control-Allow-Methods':'GET, OPTIONS'
+            },
+        })
+        .then((res) => res.json())
+        .then((data)=> {
+            var colorAlert;
+            console.log(data);
+            if(!$.isEmptyObject(data)){
+                data.forEach((element, index)=>{
+                    let tempLocation = JSON.parse("["+element['location']+"]")
+                    console.log(tempLocation);
+                    if(element['severity']==="informational"){
+                        colorAlert = '#A69E9A'
+                    }
+                    else if(element['severity']==="low"){
+                        colorAlert = '#4A9EDD'
+                    }
+                    else if(element['severity']==="medium"){
+                        colorAlert = '#fa0'
+                    }
+                    else if(element['severity']==="high"){
+                        colorAlert = '#FA6819'
+                    }
+                    else if(element['severity']==="critical"){
+                        colorAlert = '#D50615'
+                    }
+                    marker = L.marker(JSON.parse("["+element['location']+"]"), {
+                        icon: L.mapbox.marker.icon({
+                            'marker-size': 'large',
+                            'marker-symbol': 'car',
+                            'marker-color': colorAlert
+                        })
                     })
+                    .on('click', markerOnClick)
+                    .bindPopup('Category: '+element['category']+'<br/> Subcategory: '+element['subCategory']+'<br/> Severity: '+element['severity']).openPopup()
+                    .addTo(markerLayer);
                 })
-                .on('click', markerOnClick)
-                .bindPopup('Category: '+element['category']+'<br/> Subcategory: '+element['subCategory']+'<br/> Severity: '+element['severity']).openPopup()
-                .addTo(markerLayer);
-            })
-        }
-        markerLayer.addTo(map);
-    })
+            }
+            markerLayer.addTo(map);
+        })
+    }
+    else{
+        alert("It is necessary to specify the zone and select a kind of alerts visualization!.");
+    }
+    return
 }

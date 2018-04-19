@@ -49,19 +49,24 @@ function showDevicesOnmap(dataDevices){
 }
 function searching3(){
     console.log($("#zonelist3").val());
-    fetch("https://smartsecurity-webservice.herokuapp.com/service/devices/zone/"+$("#zonelist3").val(), {
-        method: 'GET',
-        headers: {
-            'Access-Control-Allow-Methods':'GET, POST, OPTIONS, PUT, PATCH, DELETE'
-        },
-    })
-    .then((res) => res.json())
-    .then((data)=> {
-        console.dir(data)
-        showDevicesOnmap(data);   
-    })
-    .catch((error)=>{
-        console.log(error);
-    })
+    if($("#zonelist3").val()!==null){
+        fetch("https://smartsecurity-webservice.herokuapp.com/service/devices/zone/"+$("#zonelist3").val(), {
+            method: 'GET',
+            headers: {
+                'Access-Control-Allow-Methods':'GET, POST, OPTIONS, PUT, PATCH, DELETE'
+            },
+        })
+        .then((res) => res.json())
+        .then((data)=> {
+            console.dir(data)
+            showDevicesOnmap(data);   
+        })
+        .catch((error)=>{
+            console.log(error);
+        })
+    }
+    else{
+        alert("It is necessary to specify the zone in order to execute the query!.");
+    }
     return;
 }
